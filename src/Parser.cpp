@@ -13,11 +13,12 @@ int Parser::add_to_storage(const std::string& line) {
 return 1;
 }
 
-std::pair<const int, std::vector<std::string>> Parser::get_gelf_line(int processid) const {
-    if(processid != 0) {
-        return *storage.find(processid);
+std::map<std::string, std::string> Parser::get_gelf_line(std::string processid) const {
+    auto iter = storage.find(processid);
+
+    if(iter != storage.end()) {
+        return iter->second;
     }
-    return *storage.end();
 }
 
 int Parser::get_storage_size() const {
@@ -57,11 +58,16 @@ std::vector<std::string> Parser::generate_vector_from_line(std::string line) con
     return tokens;
 }
 
-std::string Parser::generate_gelf_line(std::vector<std::string>& line) const {
+std::string Parser::generate_gelf_line(std::vector<std::string> line) const {
     std::string gelf_line{};
     gelf_line = "{\"version\" : \"1.1\", \"host\": \"hostname\",\"timestamp\": \"";
     for(auto const & token : line) {
-        gelf_line += token;
+        if(line[0] == token) {
+            gelf_line += HelperUtils::get_timestamp_from_datetime(token);
+            gelf_line += " ";
+        } else {
+            gelf_line += token;
+        }
     }
     return gelf_line;
 }

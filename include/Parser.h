@@ -10,6 +10,7 @@
 #include <fstream>
 #include <utility>
 #include <iostream>
+#include "HelperUtils.h"
 
 /*
  * Parser class
@@ -45,7 +46,7 @@ public:
      * @param processid: processid of the log
      * @return: gelf formatted string
      */
-    std::pair<const int, std::vector<std::string>> get_gelf_line(int processid = 0) const;
+    std::map<std::string, std::string> get_gelf_line(std::string processid) const;
 
     /*
      * get_storage_size()
@@ -69,12 +70,12 @@ public:
      * @param line_vector: vector of strings to be converted
      * @return: gelf formatted string
      */
-    std::string generate_gelf_line(std::vector<std::string>&) const;
+    std::string generate_gelf_line(std::vector<std::string>) const;
 
     std::string readline();
 
 private:
-    std::map<int, std::vector<std::string>> storage;
+    std::map<std::string, std::map<std::string, std::string>> storage;
     std::ifstream log_file{};
 };
 

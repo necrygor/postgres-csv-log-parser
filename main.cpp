@@ -3,18 +3,16 @@
 //
 
 #include "Parser.h"
-#include "HelperUtils.h"
 
 int main(int argc, char *argv[]) {
 
     Parser parser("/home/berkay/vagrant-vms/postgres-logs/postgresql-Sun.csv");
 
     std::cout << "timestamp: " << HelperUtils::get_timestamp_from_datetime("2020-04-01 00:00:00") << "\n";
-    return 0;
 
     while (true) {
         while(parser.is_file_eof() == false) {
-
+                std::cout << parser.generate_gelf_line(parser.generate_vector_from_line(parser.readline())) << "\n";
         }
         break;
     }
