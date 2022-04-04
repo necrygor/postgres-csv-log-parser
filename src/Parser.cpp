@@ -13,7 +13,7 @@ int Parser::add_to_storage(const std::string& line) {
 return 1;
 }
 
-std::map<std::string, std::string> Parser::get_gelf_line(std::string processid) const {
+std::map<std::string, std::string> Parser::get_gelf_map(std::string processid) const {
     auto iter = storage.find(processid);
 
     if(iter != storage.end()) {

@@ -40,13 +40,13 @@ public:
     int add_to_storage(const std::string& line);
 
     /*
-     * get_gelf_line()
+     * get_gelf_map()
      * This function is used to get the formatted gelf line from the storage
      * if no processid is provided, it will return last the formatted gelf line
      * @param processid: processid of the log
-     * @return: gelf formatted string
+     * @return: key value map to be formatted as gelf
      */
-    std::map<std::string, std::string> get_gelf_line(std::string processid) const;
+    std::map<std::string, std::string> get_gelf_map(std::string processid) const;
 
     /*
      * get_storage_size()
@@ -56,7 +56,7 @@ public:
     int get_storage_size() const;
 
     /*
-     * generate_gelf_from_line(
+     * generate_vector_from_line(
      * This function is used to generate gelf from the line
      * @param line: line to be converted
      * @return: gelf formatted string
