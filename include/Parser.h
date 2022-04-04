@@ -10,6 +10,7 @@
 #include <fstream>
 #include <utility>
 #include <iostream>
+#include <array>
 #include "HelperUtils.h"
 
 /*
@@ -35,18 +36,9 @@ public:
      * add_to_storage()
      * This function is used to add the data to the storage
      * @param line: line to be added
-     * @return: processid from log if added successfully, zero otherwise
+     * @return: -1 if failed, 0 if success
      */
-    int add_to_storage(const std::string& line);
-
-    /*
-     * get_gelf_map()
-     * This function is used to get the formatted gelf line from the storage
-     * if no processid is provided, it will return last the formatted gelf line
-     * @param processid: processid of the log
-     * @return: key value map to be formatted as gelf
-     */
-    std::map<std::string, std::string> get_gelf_map(std::string processid) const;
+    int add_to_storage(const std::map<std::string, std::string>&);
 
     /*
      * get_storage_size()
@@ -59,7 +51,7 @@ public:
      * generate_vector_from_line(
      * This function is used to generate gelf from the line
      * @param line: line to be converted
-     * @return: gelf formatted string
+     * @return: exploded string by commas into vector
      */
     std::vector<std::string> generate_vector_from_line(std::string line) const;
 
@@ -68,15 +60,56 @@ public:
      * generate_gelf_line()
      * This function is used to generate gelf line from the storage
      * @param line_vector: vector of strings to be converted
-     * @return: gelf formatted string
+     * @return: key-value map for gelf formatting
      */
-    std::string generate_gelf_line(std::vector<std::string>) const;
+    std::map<std::string, std::string> generate_gelf_map(std::vector<std::string>) const;
 
+    /*
+     * readline()
+     * This function is used to read the line from the file
+     * @return: std::string line read from the file
+     */
     std::string readline();
 
+    /*
+     * get_storage()
+     * This function is used to get the storage
+     * @return: std::vector<std::map<std::string, std::string>> storage
+     */
+    std::vector<std::map<std::string, std::string>> get_storage() const;
+
 private:
-    std::map<std::string, std::map<std::string, std::string>> storage;
+    std::vector<std::map<std::string, std::string>> storage;
     std::ifstream log_file{};
+
+    const std::array<std::string, 26> field_names = {
+            "timestamp",
+            "user_name",
+            "database_name",
+            "process_id",
+            "connection_from",
+            "session_id",
+            "session_line_num",
+            "command_tag",
+            "session_start_time",
+            "virtual_transaction_id",
+            "transaction_id",
+            "error_severity",
+            "sql_state_code",
+            "message",
+            "detail",
+            "hint",
+            "internal_query",
+            "internal_query_pos",
+            "context",
+            "query",
+            "query_pos",
+            "location",
+            "application_name",
+            "backend_type",
+            "leader_pid",
+            "query_id",
+    };
 };
 
 

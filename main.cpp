@@ -12,7 +12,11 @@ int main(int argc, char *argv[]) {
 
     while (true) {
         while(parser.is_file_eof() == false) {
-                std::cout << parser.generate_gelf_line(parser.generate_vector_from_line(parser.readline())) << "\n";
+            parser.add_to_storage(
+                    parser.generate_gelf_map(
+                            parser.generate_vector_from_line(
+                                    parser.readline())));
+
         }
         break;
     }

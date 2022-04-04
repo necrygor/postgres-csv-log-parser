@@ -8,21 +8,19 @@ Parser::Parser(const std::string &filename) {
     log_file.open(filename);
 }
 
-int Parser::add_to_storage(const std::string& line) {
-//    std::vector<std::string> tokens = generate_gelf_from_line(line);
-return 1;
-}
-
-std::map<std::string, std::string> Parser::get_gelf_map(std::string processid) const {
-    auto iter = storage.find(processid);
-
-    if(iter != storage.end()) {
-        return iter->second;
+int Parser::add_to_storage(const std::map<std::string, std::string>& map) {
+    int status = 0;
+    try{
+        storage.push_back(map);
+    } catch (std::exception &e) {
+        status = -1;
     }
+
+    return status;
 }
 
 int Parser::get_storage_size() const {
-    return 0;
+    return storage.size();
 }
 
 bool Parser::is_file_eof() const {
@@ -54,50 +52,23 @@ std::vector<std::string> Parser::generate_vector_from_line(std::string line) con
         tokens.push_back(token);
         line.erase(0, pos + 1);
     }
-
     return tokens;
 }
 
-std::string Parser::generate_gelf_line(std::vector<std::string> line) const {
-    std::string gelf_line{};
-    gelf_line = "{\"version\" : \"1.1\", \"host\": \"hostname\",\"timestamp\": \"";
+std::map<std::string, std::string> Parser::generate_gelf_map(std::vector<std::string> line) const {
+    std::map<std::string, std::string> gelf_map;
+    int i = 0;
     for(auto const & token : line) {
         if(line[0] == token) {
-            gelf_line += HelperUtils::get_timestamp_from_datetime(token);
-            gelf_line += " ";
+            gelf_map.insert(std::make_pair(field_names[i], token));
         } else {
-            gelf_line += token;
+            gelf_map.insert(std::make_pair(field_names[i], token));
         }
+        i++;
     }
-    return gelf_line;
+    return gelf_map;
 }
 
-/*
- * postgresql csv log format is as follows
-  log_time timestamp(3) with time zone,
-  user_name text,
-  database_name text,
-  process_id integer,
-  connection_from text,
-  session_id text,
-  session_line_num bigint,
-  command_tag text,
-  session_start_time timestamp with time zone,
-  virtual_transaction_id text,
-  transaction_id bigint,
-  error_severity text,
-  sql_state_code text,
-  message text,
-  detail text,
-  hint text,
-  internal_query text,
-  internal_query_pos integer,
-  context text,
-  query text,
-  query_pos integer,
-  location text,
-  application_name text,
-  backend_type text,
-  leader_pid integer,
-  query_id bigint,
- */
+std::vector<std::map<std::string, std::string>> Parser::get_storage() const {
+    return storage;
+}

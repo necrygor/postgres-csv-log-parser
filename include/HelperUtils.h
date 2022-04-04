@@ -20,13 +20,32 @@ public:
         int minute  = std::stol(datetime.substr(14, 2));
         int second  = std::stol(datetime.substr(17, 2));
 
-        // figure out how many leap years and add days * seconds
+        int leap_count = 0;
 
-        year = year - 1970;
+        for(int i = 1970; i < year; i++) {
+            if(HelperUtils::is_leap_year(i)) {
+                leap_count++;
+            }
+        }
+
+        year = year - 1970 + leap_count;
 
         long timestamp = (year * 365 * 24 * 60 * 60) + (month * 30 * 24 * 60 * 60) + (day * 24 * 60 * 60) + (hour * 60 * 60) + (minute * 60) + second;
         ss << timestamp;
         return ss.str();
+    }
+
+    static bool is_leap_year(int year) {
+        if (year % 4 == 0) {
+            if (year % 100 == 0) {
+                if (year % 400 == 0) {
+                    return true;
+                }
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 };
 
