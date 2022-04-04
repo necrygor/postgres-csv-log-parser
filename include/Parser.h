@@ -40,7 +40,6 @@ public:
      */
     std::vector<std::map<std::string, std::string>> get_storage() const;
 
-
     /*
      * Destructor
      */
@@ -118,6 +117,5 @@ private:
             "query_id",
     };
 };
-
 
 #endif //POSTGRES_CSV_PARSER_PARSER_H
