@@ -28,10 +28,25 @@ public:
     Parser(const std::string&);
 
     /*
+     * Entry point for parsing the csv file
+     * Populates the storage map with the data from the csv file
+     */
+    void parse();
+
+    /*
+    * get_storage()
+    * This function is used to get the storage
+     * @return: std::vector<std::map<std::string, std::string>> storage
+     */
+    std::vector<std::map<std::string, std::string>> get_storage() const;
+
+
+    /*
      * Destructor
      */
     ~Parser();
 
+private:
     /*
      * add_to_storage()
      * This function is used to add the data to the storage
@@ -71,14 +86,6 @@ public:
      */
     std::string readline();
 
-    /*
-     * get_storage()
-     * This function is used to get the storage
-     * @return: std::vector<std::map<std::string, std::string>> storage
-     */
-    std::vector<std::map<std::string, std::string>> get_storage() const;
-
-private:
     std::vector<std::map<std::string, std::string>> storage;
     std::ifstream log_file{};
 

@@ -8,27 +8,10 @@ int main(int argc, char *argv[]) {
 
     Parser parser("/home/berkay/vagrant-vms/postgres-logs/postgresql-Sun.csv");
 
-    std::cout << "timestamp: " << HelperUtils::get_timestamp_from_datetime("2020-04-01 00:00:00") << "\n";
-
     while (true) {
-        while(parser.is_file_eof() == false) {
-            parser.add_to_storage(
-                    parser.generate_gelf_map(
-                            parser.generate_vector_from_line(
-                                    parser.readline())));
-
-        }
+        parser.parse();
         break;
     }
-    /*
-     * pseudo code
-     * 1. create a storage object
-     * 2. create a file object to read log file
-     * 3. read the file line by line
-     * 4. parse the line
-     * 5. store the parsed data in the storage object
-     * 6. remove the line from storage as soon as it is parsed
-     * 7. repeat steps 3-6 until the file is empty
-     * 8. await for input
-     */
+    auto storage = parser.get_storage();
+    return 0;
 }

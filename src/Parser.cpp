@@ -72,3 +72,13 @@ std::map<std::string, std::string> Parser::generate_gelf_map(std::vector<std::st
 std::vector<std::map<std::string, std::string>> Parser::get_storage() const {
     return storage;
 }
+
+void Parser::parse() {
+    while(is_file_eof() == false) {
+            add_to_storage(
+                    generate_gelf_map(
+                            generate_vector_from_line(
+                                    readline())));
+
+    }
+}
