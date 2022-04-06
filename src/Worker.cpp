@@ -25,10 +25,13 @@ std::string Worker::generate_request(std::map<std::string, std::string> &data) c
     request += hostname;
     request += "\", ";
     for (auto &item : data) {
-        std::string key = item.first;
-        std::string value = item.second;
-        request += key + "\": \"" + value + "\"";
+        request += "\"";
+        request += item.first;
+        request += "\": \"";
+        request += item.second;
+        request += "\", ";
     }
+    request += "}";
 
     return request;
 }

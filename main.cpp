@@ -3,6 +3,7 @@
 //
 
 #include "Parser.h"
+#include "Worker.h"
 
 int main(int argc, char *argv[]) {
 
@@ -12,6 +13,13 @@ int main(int argc, char *argv[]) {
         parser.parse();
         break;
     }
+
+    Worker worker{"example.org", "remote.org", "5432"};
     auto storage = parser.get_storage();
+    for (auto &s: storage) {
+        std::string request = worker.generate_request(s);
+        std::cout << request << "\n";
+        std::cout << "----------------------------------------\n";
+    }
     return 0;
 }

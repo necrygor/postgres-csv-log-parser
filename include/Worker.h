@@ -26,7 +26,7 @@ public:
      */
     void run();
 
-private:
+
     /*
      * Check if storage is populated
      * @param const std::vector<std::map<std::string, std::string>> &storage
