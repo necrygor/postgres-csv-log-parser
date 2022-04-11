@@ -8,6 +8,10 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <boost/asio.hpp>
+#include <iostream>
+
+#define BUFSIZE 8192
 
 
 class Worker {
@@ -58,7 +62,9 @@ public:
     static int request_sent;
 
     std::string request_url;
+    int port;
     std::string hostname;
+    int fail_status = -1;
 };
 
 

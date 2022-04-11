@@ -4,7 +4,7 @@
 
 #include "Worker.h"
 
-Worker::Worker(const std::string &host, const std::string &remote, const std::string &port) : hostname(host), request_url(remote + ":" + port) {
+Worker::Worker(const std::string &host, const std::string &remote, const std::string &port) : hostname(host), request_url(remote), port{std::stoi(port)} {
 
 }
 
@@ -36,6 +36,6 @@ std::string Worker::generate_request(std::map<std::string, std::string> &data) c
     return request;
 }
 
-void Worker::send_request(const std::string &) {
-
+void Worker::send_request(const std::string &request) {
 }
+

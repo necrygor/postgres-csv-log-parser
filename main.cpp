@@ -14,11 +14,12 @@ int main(int argc, char *argv[]) {
         break;
     }
 
-    Worker worker{"example.org", "remote.org", "5432"};
+    Worker worker{"example.org", "127.0.0.1", "8000"};
     auto storage = parser.get_storage();
     for (auto &s: storage) {
         std::string request = worker.generate_request(s);
         std::cout << request << "\n";
+        worker.send_request(request);
         std::cout << "----------------------------------------\n";
     }
     return 0;
