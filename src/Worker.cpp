@@ -25,10 +25,13 @@ std::string Worker::generate_request(std::map<std::string, std::string> &data) c
     request += hostname;
     request += "\", ";
     for (auto &item : data) {
+        std::string second{item.second};
+        second.erase(remove( second.begin(), second.end(), '\"' ),second.end());
+        // TODO: convert datetime to unix timestamp, item.first is timestamp
         request += "\"";
         request += item.first;
         request += "\": \"";
-        request += item.second;
+        request += second;
         request += "\", ";
     }
     request += "}";
@@ -66,7 +69,7 @@ void Worker::send_request(const std::string &request) {
     }
     read(sockfd, buffer, 8192);
     std::cout << buffer << "\n";
+    sleep(1);
     close(sockfd);
-    sleep(2);
 }
 

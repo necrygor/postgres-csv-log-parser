@@ -47,6 +47,15 @@ public:
         }
         return false;
     }
+
+    static void escape_special_characters(std::string &str) {
+        for(int i = 0; i < str.length(); i++) {
+            if(str[i] == '"' || str[i] == '\"' || str[i] == '\'' || str[i] == '\\') {
+                str.replace(i, 1, "");
+                i++;
+            }
+        }
+    }
 };
 
 

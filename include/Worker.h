@@ -15,6 +15,8 @@
 #include <signal.h>
 #include <unistd.h>
 #include <cstring>
+#include "HelperUtils.h"
+#include <algorithm>
 
 #define BUFSIZE 8192
 
