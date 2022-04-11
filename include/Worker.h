@@ -8,8 +8,13 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <boost/asio.hpp>
+#include <cerrno>
 #include <iostream>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <signal.h>
+#include <unistd.h>
+#include <cstring>
 
 #define BUFSIZE 8192
 

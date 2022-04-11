@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
         break;
     }
 
-    Worker worker{"example.org", "127.0.0.1", "8000"};
+    Worker worker{"example.org", "135.181.203.42", "8080"};
     auto storage = parser.get_storage();
     for (auto &s: storage) {
         std::string request = worker.generate_request(s);
