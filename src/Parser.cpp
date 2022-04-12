@@ -69,7 +69,7 @@ std::map<std::string, std::string> Parser::generate_gelf_map(std::vector<std::st
     return gelf_map;
 }
 
-std::vector<std::map<std::string, std::string>> Parser::get_storage() const {
+std::vector<std::map<std::string, std::string>>& Parser::get_storage() {
     return storage;
 }
 

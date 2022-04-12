@@ -38,7 +38,7 @@ public:
     * This function is used to get the storage
      * @return: std::vector<std::map<std::string, std::string>> storage
      */
-    std::vector<std::map<std::string, std::string>> get_storage() const;
+    std::vector<std::map<std::string, std::string>>& get_storage();
 
     /*
      * Destructor

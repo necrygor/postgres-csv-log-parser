@@ -28,10 +28,16 @@ std::string Worker::generate_request(std::map<std::string, std::string> &data) c
         std::string second{item.second};
         second.erase(remove( second.begin(), second.end(), '\"' ),second.end());
         // TODO: convert datetime to unix timestamp, item.first is timestamp
+
         request += "\"";
         request += item.first;
         request += "\": \"";
         request += second;
+/*        if(item.first == "timestamp") {
+            request += HelperUtils::get_timestamp_from_datetime(second);
+        } else {
+            request += second;
+        }*/
         request += "\", ";
     }
     request += "}";
@@ -40,8 +46,12 @@ std::string Worker::generate_request(std::map<std::string, std::string> &data) c
 }
 
 void Worker::send_request(const std::string &request) {
+    /*
+     * Motherfucking C to the help
+     */
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     char buffer[8192];
+    int result;
     if (sockfd < 0) {
         std::cerr << "Error opening socket" << std::endl;
         exit(1);
@@ -62,14 +72,13 @@ void Worker::send_request(const std::string &request) {
 
     connect(sockfd, (struct sockaddr *) &server, sizeof(server));
 
-    if (send(sockfd, request.c_str(), request.length(), 0) < 0) {
+    result = send(sockfd, request.c_str(), request.length(), 0);
+
+    if (result < 0) {
         std::cerr << "Error sending request" << std::endl;
         std::cerr << std::strerror(errno) << "\n";
-        exit(1);
+        exit(186);
     }
-    read(sockfd, buffer, 8192);
-    std::cout << buffer << "\n";
-    sleep(1);
     close(sockfd);
 }
 
