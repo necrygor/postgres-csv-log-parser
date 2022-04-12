@@ -7,14 +7,19 @@
 
 int main(int argc, char *argv[]) {
 
+    /*
+     * Control inside Parser::parse() could be done against the return value of seekg() and tellg()
+     * We control tellg() against eof() for every iteration and get the current position of the stream with seekg()
+     * I'm gonna implement this by tomorrow I hope.
+     */
+
     Parser parser("/home/berkay/vagrant-vms/postgres-logs/postgresql-Sun.csv");
-    Worker worker{"test-son", "10.87.127.247", "12201"};
+    Worker worker{"test-artık-son", "10.87.127.247", "12201"};
     parser.parse();
-    auto storage = parser.get_storage();
+    auto& storage = parser.get_storage();
     int counter = 0;
 
     while (true) {
-
         if(storage.size() > 0) {
             std::string request = worker.generate_request(storage.front());
             worker.send_request(request);
@@ -26,12 +31,5 @@ int main(int argc, char *argv[]) {
             parser.parse();
         }
     }
-
     return 0;
-    for (auto &s: storage) {
-        std::string request = worker.generate_request(s);
-        std::cout << request << "\n";
-        worker.send_request(request);
-        std::cout << "----------------------------------------\n";
-    }
 }
