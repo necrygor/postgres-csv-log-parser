@@ -45,6 +45,9 @@ public:
      */
     ~Parser();
 
+    void open_file(const std::string&);
+    void close_file();
+
 private:
     /*
      * add_to_storage()
@@ -87,6 +90,8 @@ private:
 
     std::vector<std::map<std::string, std::string>> storage;
     std::ifstream log_file{};
+
+    static int file_position;
 
     const std::array<std::string, 26> field_names = {
             "timestamp",

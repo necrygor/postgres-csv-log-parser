@@ -13,11 +13,16 @@ int main(int argc, char *argv[]) {
      * I'm gonna implement this by tomorrow I hope.
      */
 
+    /*
+     * ifstream::tellg() returns -1 when it is at the end of stream.
+     */
+
     Parser parser("/home/berkay/vagrant-vms/postgres-logs/postgresql-Sun.csv");
-    Worker worker{"test-artık-son", "10.87.127.247", "12201"};
+    Worker worker{"berkay", "10.87.127.247", "12201"};
     parser.parse();
     auto& storage = parser.get_storage();
     int counter = 0;
+    parser.close_file();
 
     while (true) {
         if(storage.size() > 0) {
@@ -25,10 +30,10 @@ int main(int argc, char *argv[]) {
             worker.send_request(request);
             storage.erase(storage.begin());
         } else {
-            counter++;
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            std::cout << "Waiting for new data... " << counter << "th time.\n";
+            parser.open_file("/home/berkay/vagrant-vms/postgres-logs/postgresql-Sun.csv");
             parser.parse();
+            parser.close_file();
         }
     }
     return 0;

@@ -4,8 +4,10 @@
 
 #include "Parser.h"
 
+int Parser::file_position = 0;
+
 Parser::Parser(const std::string &filename) {
-    log_file.open(filename);
+    open_file(filename);
 }
 
 int Parser::add_to_storage(const std::map<std::string, std::string>& map) {
@@ -29,16 +31,34 @@ bool Parser::is_file_eof() const {
 
 std::string Parser::readline() {
     std::string line{};
+
+    if(log_file.tellg() <= file_position) {
+        log_file.seekg(file_position);
+    }
+
     if (log_file.is_open()) {
         std::getline(log_file, line);
     } else {
         std::cerr << "File is not open\n";
     }
+
+    if(log_file.tellg() != -1) {
+        file_position = log_file.tellg();
+    }
+
     return line;
 }
 
-Parser::~Parser() {
+void Parser::open_file(const std::string &filename) {
+    log_file.open(filename);
+}
+
+void Parser::close_file() {
     log_file.close();
+}
+
+Parser::~Parser() {
+    close_file();
 }
 
 std::vector<std::string> Parser::generate_vector_from_line(std::string line) const {

@@ -51,11 +51,12 @@ void Worker::send_request(const std::string &request) {
      */
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     char buffer[8192];
-    int result;
+    int result = 0;
     if (sockfd < 0) {
         std::cerr << "Error opening socket" << std::endl;
         exit(1);
     }
+    //setsockopt(sockfd, SOL_SOCKET, SO_KEEPALIVE, &result, sizeof(result));
 
     signal(SIGPIPE, SIG_IGN);
 
