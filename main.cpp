@@ -4,21 +4,24 @@
 
 #include "Parser.h"
 #include "Worker.h"
+#include "INIReader.h"
 
 int main(int argc, char *argv[]) {
 
-    /*
-     * Control inside Parser::parse() could be done against the return value of seekg() and tellg()
-     * We control tellg() against eof() for every iteration and get the current position of the stream with seekg()
-     * I'm gonna implement this by tomorrow I hope.
-     */
+    INIReader reader("/etc/config.ini");
 
-    /*
-     * ifstream::tellg() returns -1 when it is at the end of stream.
-     */
+    auto filename = reader.Get("File", "filename", "");
+    auto hostname = reader.Get("Host", "hostname", "");
+    auto remote_address = reader.Get("LogServer", "address", "");
+    auto remote_port = reader.Get("LogServer", "port", "");
 
-    Parser parser("/home/berkay/vagrant-vms/postgres-logs/postgresql-Sun.csv");
-    Worker worker{"berkay", "10.87.127.247", "12201"};
+    if (reader.ParseError() < 0) {
+        std::cout << "Can't load 'config.ini'\n";
+        return 1;
+    }
+
+    Parser parser(filename);
+    Worker worker{hostname, remote_address, remote_port};
     parser.parse();
     auto& storage = parser.get_storage();
     int counter = 0;
@@ -31,7 +34,7 @@ int main(int argc, char *argv[]) {
             storage.erase(storage.begin());
         } else {
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            parser.open_file("/home/berkay/vagrant-vms/postgres-logs/postgresql-Sun.csv");
+            parser.open_file(filename);
             parser.parse();
             parser.close_file();
         }

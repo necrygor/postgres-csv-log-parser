@@ -8,16 +8,8 @@ Worker::Worker(const std::string &host, const std::string &remote, const std::st
 
 }
 
-void Worker::run() {
-
-}
-
 bool Worker::check_storage(const std::vector<std::map<std::string, std::string>> &storage) const {
     return !storage.empty();
-}
-
-void Worker::read_data(const std::vector<std::map<std::string, std::string>> &storage) const {
-
 }
 
 std::string Worker::generate_request(std::map<std::string, std::string> &data) const {

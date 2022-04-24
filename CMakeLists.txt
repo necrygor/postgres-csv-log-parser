@@ -10,4 +10,4 @@ set(CMAKE_CXX_FLAGS "-pthread")
 include_directories(include)
 
 add_executable(postgres_csv_parser
-        main.cpp src/Parser.cpp include/Parser.h include/HelperUtils.h src/Worker.cpp include/Worker.h)
+        main.cpp src/Parser.cpp include/Parser.h include/HelperUtils.h src/Worker.cpp include/Worker.h include/INIReader.h)
