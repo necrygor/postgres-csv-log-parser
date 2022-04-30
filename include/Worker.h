@@ -59,5 +59,16 @@ public:
     int fail_status = -1;
 };
 
+class WorkerException : public std::exception {
+public:
+    explicit WorkerException(const std::string &message) : message(message) {}
+
+    const char *what() const noexcept override {
+        return message.c_str();
+    }
+
+private:
+    std::string message;
+};
 
 #endif //POSTGRES_CSV_PARSER_WORKER_H

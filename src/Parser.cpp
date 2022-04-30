@@ -51,10 +51,18 @@ std::string Parser::readline() {
 
 void Parser::open_file(const std::string &filename) {
     log_file.open(filename);
+
+    if(!log_file.is_open()) {
+        throw ParserException("File could not be opened");
+    }
 }
 
 void Parser::close_file() {
     log_file.close();
+
+    if(log_file.is_open()) {
+        throw ParserException("File could not be closed");
+    }
 }
 
 Parser::~Parser() {

@@ -12,6 +12,7 @@
 #include <iostream>
 #include <array>
 #include "HelperUtils.h"
+#include <spdlog/spdlog.h>
 
 /*
  * Parser class
@@ -121,6 +122,15 @@ private:
             "leader_pid",
             "query_id",
     };
+};
+
+class ParserException : public std::exception {
+public:
+    ParserException(const std::string& message) : message(message) {}
+    const char* what() const noexcept override { return message.c_str(); }
+
+private:
+    std::string message;
 };
 
 #endif //POSTGRES_CSV_PARSER_PARSER_H
